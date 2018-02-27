@@ -1,7 +1,10 @@
 import itertools
 import unittest
 
-def Reversed(l):
+
+def Reversed(l : "A list or something that reversed() can be used on.") -> "An iterator for the reversed version of the input.":
+    """ Merges list.reverse() and reversed(tuple) into a single function.
+    """
     if isinstance(l, tuple):
         r = tuple(reversed(l))
     elif isinstance(l, list):
@@ -10,7 +13,17 @@ def Reversed(l):
         raise TypeError("Don't know how to reverse type {}".format(type(l)))
     return r
 
-def GenerateCosts(points, costs):
+def Rotated(l : "A list/tuple to rotate",
+            n : "How many times to rotate") -> "A rotated version of a thing thats indexable.":
+    """ Rotates an array by n places.
+        i.e. Rotated((1, 2, 3), 1) -> (2, 3, 1)
+    """
+    return l[n:] + l[:n]
+
+def GenerateCosts(points : "A list/tuple containing all the points in the system",
+                  costs  : "A dictionary as follows for all known relationships excluding the reverses {(point_A, point_B): cost_to_travel}"):
+    """ Generates and returns two data structures containing all possible cost relationships between points based on the relationships given.
+    """
     edge_costs = {}
     for edge in itertools.combinations(points, 2):
         reved_edge = tuple(Reversed(edge))
@@ -39,9 +52,6 @@ def GenerateCosts(points, costs):
     edge_costs = dict(edge_costs)
 
     return edge_costs, point_costs
-
-def Rotated(l, n):
-    return l[n:] + l[:n]
 
 def SanitizeCycle(cycle):
     cycle = list(cycle)
